@@ -76,12 +76,8 @@ investigated.  This model does not completely ignore outliers but weights them l
 relatively low epsilon value was chosen to count a relatively large percentage of the line segments as outliers and 
 weight them less in the fit.
 
-Because of the fact that the speed of the car is significantly slow compared to the frame rate of the camera taking 
-into account the sequential nature of the video frames can provide additional information about the likely location 
-of the lane lines.  For this project a very simple approach was taken which forgets each activated pixel by linearly
- decreasing it's value over 10 frames and resetting it again if it is seen in the current frame. In addition, these 
- pixel activations can be used to weight each of the points in the robust linear fit so that older pixels have a 
- smaller influence on the most recent fit.
+Because of the relatively low speed of the car and relatively good frame rate of the video the performance of the image processing pipeline outlined about can be significantly improved by taking 
+into account the sequential nature of the video frames.  For this project a very simple approach was taken by using the pixels from the most recent Hough transform image and "activating" all of those pixels in the image that will be fit by setting those values to 1. The activated pixel's values are then linearly decreased to zero over 10 frames unless that pixel is activated again by another frame. In addition, these pixel activations can be used to weight each of the points in the robust linear fit so that older pixels have a smaller influence on the most recent fit. The impact of utlizing this temporal information significantly improved my performance on the videos.
 
 
 ### 2. Identify potential shortcomings with your current pipeline
