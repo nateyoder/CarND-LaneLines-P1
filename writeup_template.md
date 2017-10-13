@@ -74,7 +74,14 @@ into account all the line segments that are not considered outliers by the robus
 linear models were investigated but a Huber regression model appeared to work relatively well for the videos 
 investigated.  This model does not completely ignore outliers but weights them less in the fit. A 
 relatively low epsilon value was chosen to count a relatively large percentage of the line segments as outliers and 
-weight them less in the fit. 
+weight them less in the fit.
+
+Because of the fact that the speed of the car is significantly slow compared to the frame rate of the camera taking 
+into account the sequential nature of the video frames can provide additional information about the likely location 
+of the lane lines.  For this project a very simple approach was taken which forgets each activated pixel by linearly
+ decreasing it's value over 10 frames and resetting it again if it is seen in the current frame. In addition, these 
+ pixel activations can be used to weight each of the points in the robust linear fit so that older pixels have a 
+ smaller influence on the most recent fit.
 
 
 ### 2. Identify potential shortcomings with your current pipeline
@@ -91,20 +98,18 @@ will be violated anytime the car switches lanes and others are likely to be viol
 
 ### 3. Suggest possible improvements to your pipeline
 
-There are a large assortment of possible ways in which this algorithm could be improved. For instance, currently 
-each image frame is being considered completely independently of the previous frames. However, because of the 
-relatively high framerate of the camera in comparision to the car's speed these images, and the location of the lane
- lines in them, are likely to be highly correlated from frame to frame. This additional information should be used to 
- smooth the fits of the lane lines and estimate the lines more accurately.
+There are a large assortment of possible ways in which this algorithm could be improved. For instance, I am 
+currently a very naive version of forgetting previous lane lines temporally which could likely be greater improved 
+with a more sophisticated model.
  
- Another improvement would be to relax the assumption that the lane lines are straight.  There are many ways in 
- which this could be accomplished. An initial effort was performed to investigate using a polynomial fit to allow 
- the lane lines to curve but it was found that this was subject to a lot of noise, even when a robust 
- linear model was used to estimate the parameters. A piecewise linear fit might be another alternative.
+Another improvement would be to relax the assumption that the lane lines are straight.  There are many ways in 
+which this could be accomplished. An initial effort was performed to investigate using a polynomial fit to allow 
+the lane lines to curve but it was found that this was subject to a lot of noise, even when a robust 
+linear model was used to estimate the parameters. A piecewise linear fit might be another alternative.
  
- Another improvement to this model might be to use a different line segment algorithm.  For instance, the line 
- detection algorithm described in this [paper](https://scholar.google.com/scholar?q=A+simple+and+robust+line+detection+algorithm+based+on+small+eigenvalue+analysis&hl=en) 
- might be interesting to investigate.  
+Another improvement to this model might be to use a different line segment algorithm.  For instance, the line 
+detection algorithm described in this [paper](https://scholar.google.com/scholar?q=A+simple+and+robust+line+detection+algorithm+based+on+small+eigenvalue+analysis&hl=en) 
+might be interesting to investigate.  
  
- I also look forward to learning about other potential approaches such as learning more about deep learning based 
- attention models which might be able to estimate the probability that each pixel is part of a lane line boundary.
+I also look forward to learning about other potential approaches such as learning more about deep learning based 
+attention models which might be able to estimate the probability that each pixel is part of a lane line boundary.
